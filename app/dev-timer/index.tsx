@@ -233,6 +233,20 @@ export function DevTimer() {
     }
   };
 
+  const handleMoveStage = (currentIndex: number, direction: 'up' | 'down') => {
+    if (timerState.isRunning) return;
+    
+    const newIndex = direction === 'up' ? currentIndex - 1 : currentIndex + 1;
+    if (newIndex < 0 || newIndex >= stages.length) return;
+
+    setStages(prev => {
+      const newStages = [...prev];
+      const [movedStage] = newStages.splice(currentIndex, 1);
+      newStages.splice(newIndex, 0, movedStage);
+      return newStages;
+    });
+  };
+
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="flex justify-between items-start mb-6">
@@ -311,13 +325,34 @@ export function DevTimer() {
                   : 'hover:bg-gray-50'
                 } ${!timerState.isRunning ? 'cursor-move' : ''}`}
             >
-              <div className="flex justify-between items-center mb-2">
-                <div className="flex items-center gap-2">
+              <div className="sm:flex sm:justify-between sm:items-center">
+                <div className="flex items-center gap-2 mb-2 sm:mb-0">
+                  <div className="hidden sm:flex items-center">
+                    <span className="text-gray-400 select-none">⋮⋮</span>
+                  </div>
+                  <div className="flex sm:hidden gap-1">
+                    <button
+                      onClick={() => handleMoveStage(index, 'up')}
+                      disabled={timerState.isRunning || index === 0}
+                      className="p-1 text-gray-500 hover:bg-gray-100 rounded disabled:opacity-30"
+                      title="上移"
+                    >
+                      ↑
+                    </button>
+                    <button
+                      onClick={() => handleMoveStage(index, 'down')}
+                      disabled={timerState.isRunning || index === stages.length - 1}
+                      className="p-1 text-gray-500 hover:bg-gray-100 rounded disabled:opacity-30"
+                      title="下移"
+                    >
+                      ↓
+                    </button>
+                  </div>
                   <span>#{index + 1}</span>
                   <span className="font-medium">{stage.name}</span>
                   <span>{formatTime(stage.duration)}</span>
                 </div>
-                <div className="flex gap-2">
+                <div className="flex gap-2 justify-end">
                   <button
                     onClick={() => handleEdit(stage)}
                     disabled={timerState.isRunning}
@@ -341,9 +376,9 @@ export function DevTimer() {
                   </button>
                 </div>
               </div>
-
+              
               {timerState.currentStageId === stage.id && (
-                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden mt-2">
                   <div
                     className="h-full bg-blue-500 transition-all duration-1000"
                     style={{ width: `${timerState.progress}%` }}
