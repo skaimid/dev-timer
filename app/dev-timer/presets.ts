@@ -17,6 +17,20 @@ export const PRESETS: Preset[] = [
     ],
   },
   {
+    id: 'bw-reverse',
+    name: '黑白胶片反转冲洗',
+    stages: [
+      { id: 'bw-1', name: '首显', duration: 240 }, // 4分钟
+      { id: 'bw-2', name: '水洗', duration: 180 }, // 3分钟
+      { id: 'bw-3', name: '漂白', duration: 300 }, // 5分钟
+      { id: 'bw-4', name: '清洁', duration: 30 }, // 30s
+      { id: 'bw-5', name: '水洗', duration: 180 }, // 3分钟
+      { id: 'bw-6', name: '二曝', duration: 30 }, //  30s
+      { id: 'bw-7', name: '二显', duration: 600 }, // 5分钟
+      { id: 'bw-8', name: '水洗', duration: 180 }, // 3分钟
+    ],
+  },
+  {
     id: 'c41-standard',
     name: 'C41彩色胶片标准冲洗',
     stages: [
