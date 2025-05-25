@@ -70,7 +70,7 @@ export function DevTimer() {
 
     const customPresets = localStorage.getItem(STORAGE_KEY);
     let updatedPresets: Preset[] = [];
-    
+
     if (customPresets) {
       try {
         updatedPresets = JSON.parse(customPresets);
@@ -81,14 +81,14 @@ export function DevTimer() {
 
     updatedPresets.push(newPreset);
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updatedPresets));
-    
+
     setAllPresets([...PRESETS, ...updatedPresets]);
     setCurrentPresetId(newPreset.id);
   };
 
   const startTimer = useCallback((stage: Stage) => {
     if (timerState.isRunning) return;
-    
+
     const newLog: TimerLog = {
       id: uuidv4(),
       stageId: stage.id,
@@ -133,16 +133,16 @@ export function DevTimer() {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    
+
     if (timerState.isRunning && timerState.remainingTime > 0) {
       timer = setInterval(() => {
         setTimerState(prev => {
           const newRemainingTime = prev.remainingTime - 1;
           const stage = stages.find(s => s.id === prev.currentStageId);
           if (!stage) return prev;
-          
+
           const progress = ((stage.duration - newRemainingTime) / stage.duration) * 100;
-          
+
           if (newRemainingTime <= 0) {
             stopTimer('completed');
             return prev;
@@ -182,7 +182,7 @@ export function DevTimer() {
 
   const handleSaveStage = (stageData: Omit<Stage, 'id'>) => {
     if (editingStage) {
-      setStages(prev => prev.map(s => 
+      setStages(prev => prev.map(s =>
         s.id === editingStage.id ? { ...stageData, id: s.id } : s
       ));
     } else {
@@ -235,55 +235,55 @@ export function DevTimer() {
 
   return (
     <div className="p-6 max-w-4xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-between items-start mb-6">
         <h1 className="text-2xl font-bold">胶卷冲洗计时器</h1>
-        <div className="flex gap-4 items-center">
-          <div className="flex items-center gap-2">
-            <label className="text-sm font-medium">预设配置:</label>
-            <select
-              value={currentPresetId}
-              onChange={(e) => handlePresetChange(e.target.value)}
-              className="px-3 py-2 border rounded bg-white min-w-[200px]"
-              disabled={timerState.isRunning}
-            >
-              <optgroup label="默认配置">
-                {PRESETS.map(preset => (
+      </div>
+      <div className="flex flex-col gap-4 mb-4">
+        <div className="flex items-center gap-2 w-full">
+          <label className="text-sm font-medium whitespace-nowrap">预设配置:</label>
+          <select
+            value={currentPresetId}
+            onChange={(e) => handlePresetChange(e.target.value)}
+            className="px-2 py-1 border rounded bg-white w-full min-w-[300px] text-sm"
+            disabled={timerState.isRunning}
+          >
+            <optgroup label="默认配置">
+              {PRESETS.map(preset => (
+                <option key={preset.id} value={preset.id}>
+                  {preset.name}
+                </option>
+              ))}
+            </optgroup>
+            {allPresets.length > PRESETS.length && (
+              <optgroup label="自定义配置">
+                {allPresets.slice(PRESETS.length).map(preset => (
                   <option key={preset.id} value={preset.id}>
                     {preset.name}
                   </option>
                 ))}
               </optgroup>
-              {allPresets.length > PRESETS.length && (
-                <optgroup label="自定义配置">
-                  {allPresets.slice(PRESETS.length).map(preset => (
-                    <option key={preset.id} value={preset.id}>
-                      {preset.name}
-                    </option>
-                  ))}
-                </optgroup>
-              )}
-            </select>
-          </div>
-          <div className="flex gap-2">
-            <button
-              onClick={() => setSaveModalOpen(true)}
-              className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
-              disabled={timerState.isRunning}
-            >
-              保存配置到浏览器
-            </button>
-            <button
-              onClick={handleClearLocalPresets}
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
-              disabled={timerState.isRunning || allPresets.length <= PRESETS.length}
-              title={allPresets.length <= PRESETS.length ? '没有本地保存的配置' : ''}
-            >
-              清除本地配置
-            </button>
-          </div>
+            )}
+          </select>
+        </div>
+        <div className="flex gap-2">
+          <button
+            onClick={() => setSaveModalOpen(true)}
+            className="px-2 py-1 bg-blue-500 text-white text-sm rounded hover:bg-blue-600"
+            disabled={timerState.isRunning}
+          >
+            保存配置
+          </button>
+          <button
+            onClick={handleClearLocalPresets}
+            className="px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600"
+            disabled={timerState.isRunning || allPresets.length <= PRESETS.length}
+            title={allPresets.length <= PRESETS.length ? '没有本地保存的配置' : ''}
+          >
+            清除本地配置
+          </button>
         </div>
       </div>
-      
+
       {/* 阶段配置 */}
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
@@ -341,7 +341,7 @@ export function DevTimer() {
                   </button>
                 </div>
               </div>
-              
+
               {timerState.currentStageId === stage.id && (
                 <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                   <div
@@ -401,9 +401,8 @@ export function DevTimer() {
           {logs.map(log => (
             <div
               key={log.id}
-              className={`p-3 border rounded ${
-                log.status === 'completed' ? 'bg-green-50' : 'bg-gray-50'
-              }`}
+              className={`p-3 border rounded ${log.status === 'completed' ? 'bg-green-50' : 'bg-gray-50'
+                }`}
             >
               <div className="flex justify-between items-center">
                 <span>{log.stageName}</span>
