@@ -1,87 +1,106 @@
-# Welcome to React Router!
+# 胶卷冲洗计时器
 
-A modern, production-ready template for building full-stack React applications using React Router.
+一个专门为胶片摄影爱好者设计的冲洗计时工具。支持多种胶片类型的冲洗流程，可自定义冲洗阶段和时间，并记录所有操作历史。
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/remix-run/react-router-templates/tree/main/default)
+## 功能特点
 
-## Features
+### 预设配置
+- 内置三种标准冲洗流程：
+  - 黑白胶片标准冲洗
+  - C41彩色胶片标准冲洗
+  - E6反转片标准冲洗
+- 支持保存自定义配置到浏览器
+- 可以随时切换不同的冲洗配置
 
-- 🚀 Server-side rendering
-- ⚡️ Hot Module Replacement (HMR)
-- 📦 Asset bundling and optimization
-- 🔄 Data loading and mutations
-- 🔒 TypeScript by default
-- 🎉 TailwindCSS for styling
-- 📖 [React Router docs](https://reactrouter.com/)
+### 冲洗阶段管理
+- 灵活添加、修改、删除冲洗阶段
+- 支持拖拽排序调整阶段顺序
+- 每个阶段可配置名称和时间（分钟和秒）
+- 计时过程中禁止修改配置，确保安全
 
-## Getting Started
+### 计时功能
+- 点击开始按钮启动计时
+- 实时显示进度条和剩余时间
+- 计时完成后播放提示音
+- 支持手动停止计时
 
-### Installation
+### 操作记录
+- 自动记录所有冲洗操作
+- 包含开始时间、结束时间和完成状态
+- 支持导出记录为TXT文件
+- 导出文件包含当前使用的配置信息
 
-Install the dependencies:
+### 数据管理
+- 自动保存配置到浏览器本地存储
+- 支持一键清除本地配置
+- 支持清除操作记录
+- 所有危险操作都需要二次确认
 
+## 使用说明
+
+1. 选择预设配置
+   - 从顶部下拉框选择需要的冲洗配置
+   - 可以选择默认配置或之前保存的自定义配置
+
+2. 自定义冲洗流程
+   - 点击"新增阶段"添加冲洗步骤
+   - 设置每个阶段的名称和时间
+   - 通过拖拽调整阶段顺序
+   - 点击"保存配置到浏览器"保存当前配置
+
+3. 开始冲洗
+   - 点击需要的阶段的"开始"按钮
+   - 观察进度条和剩余时间
+   - 等待提示音或手动停止
+
+4. 查看记录
+   - 在页面底部查看所有操作记录
+   - 点击"导出记录"保存为文件
+   - 需要时可以清除记录
+
+## 技术栈
+
+- React
+- TypeScript
+- Tailwind CSS
+- HTML5 Audio API
+- localStorage API
+- Drag and Drop API
+
+## 开发说明
+
+### 安装依赖
 ```bash
 npm install
 ```
 
-### Development
-
-Start the development server with HMR:
-
+### 运行开发服务器
 ```bash
 npm run dev
 ```
 
-Your application will be available at `http://localhost:5173`.
-
-## Building for Production
-
-Create a production build:
-
+### 构建生产版本
 ```bash
 npm run build
 ```
 
-## Deployment
+## 注意事项
 
-### Docker Deployment
+1. 请确保浏览器允许播放音频，以便听到计时完成提示音
+2. 建议定期导出操作记录，以防浏览器数据丢失
+3. 计时过程中请勿刷新或关闭页面
+4. 首次使用时需要添加提示音文件到 `public/notification.mp3`
 
-To build and run using Docker:
+## 贡献指南
 
-```bash
-docker build -t my-app .
+欢迎提交 Issue 和 Pull Request。在提交代码前，请确保：
 
-# Run the container
-docker run -p 3000:3000 my-app
-```
+1. 代码经过格式化和类型检查
+2. 所有功能都经过测试
+3. 提交信息清晰明了
+4. 更新相关文档
 
-The containerized application can be deployed to any platform that supports Docker, including:
+## 许可证
 
-- AWS ECS
-- Google Cloud Run
-- Azure Container Apps
-- Digital Ocean App Platform
-- Fly.io
-- Railway
+MIT License
 
-### DIY Deployment
-
-If you're familiar with deploying Node applications, the built-in app server is production-ready.
-
-Make sure to deploy the output of `npm run build`
-
-```
-├── package.json
-├── package-lock.json (or pnpm-lock.yaml, or bun.lockb)
-├── build/
-│   ├── client/    # Static assets
-│   └── server/    # Server-side code
-```
-
-## Styling
-
-This template comes with [Tailwind CSS](https://tailwindcss.com/) already configured for a simple default starting experience. You can use whatever CSS framework you prefer.
-
----
-
-Built with ❤️ using React Router.
